@@ -1,0 +1,87 @@
+
+
+{% extends 'base.html' %}
+{% load form_filters %}
+{% block title %}Home - Flipr{% endblock %}
+{% block content %}
+
+<div class="text-center mb-5">
+    <h1 class="display-4 fw-bold">Welcome to Flipr Showcase</h1>
+    <p class="lead">Explore our successful projects, satisfied clients, and stay connected!</p>
+</div>
+
+<hr>
+<h2 class="text-center mb-4">🌟 Our Projects</h2>
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+    {% for project in projects %}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0">
+            <img src="{{ project.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title text-primary">{{ project.name }}</h5>
+                <p class="card-text">{{ project.description|truncatechars:100 }}</p>
+                <a href="#" class="btn btn-outline-primary btn-sm">Read More</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<hr>
+<h2 class="text-center mb-4">💬 Happy Clients</h2>
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+    {% for client in clients %}
+    <div class="col">
+        <div class="card h-100 text-center border-0 shadow-sm">
+            <img src="{{ client.image.url }}" class="rounded-circle mx-auto mt-3" style="width: 100px; height: 100px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title">{{ client.name }}</h5>
+                <p class="card-text">"{{ client.description|truncatechars:120 }}"</p>
+                <p class="text-muted small">— {{ client.designation }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<hr>
+<h2 class="text-center mb-4">📨 Contact Us</h2>
+<div class="d-flex justify-content-center mb-5">
+    <div class="col-md-8">
+        <form method="POST" action="{% url 'submit_contact' %}" class="card p-4 shadow-sm border-0">
+    {% csrf_token %}
+    <div class="mb-3 text-center">
+        {{ contact_form.name.label_tag }}
+        {{ contact_form.name|add_class:"form-control w-75 mx-auto" }}
+    </div>
+    <div class="mb-3 text-center">
+        {{ contact_form.email.label_tag }}
+        {{ contact_form.email|add_class:"form-control w-75 mx-auto" }}
+    </div>
+    <div class="mb-3 text-center">
+        {{ contact_form.mobile.label_tag }}
+        {{ contact_form.mobile|add_class:"form-control w-75 mx-auto" }}
+    </div>
+    <div class="mb-3 text-center">
+        {{ contact_form.city.label_tag }}
+        {{ contact_form.city|add_class:"form-control w-75 mx-auto" }}
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary px-5">Submit</button>
+    </div>
+</form>
+    </div>
+</div>
+
+<hr>
+<h2 class="text-center mb-4">📬 Subscribe to Our Newsletter</h2>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form method="POST" action="{% url 'subscribe' %}" class="d-flex gap-2">
+            {% csrf_token %}
+            {{ newsletter_form.email }}
+            <button class="btn btn-success">Subscribe</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
